@@ -1,0 +1,101 @@
+namespace: chargesquare
+service:
+  port: 9092
+zookeeper:
+  name: zookeeper
+  replicas: 1
+  image:
+    repository: confluentinc/cp-zookeeper
+    tag: 7.3.0
+  port: 2181 # Move this here
+  env:
+    clientPort: "2181"
+    tickTime: "2000"
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+spring:
+  datasource:
+    url: "jdbc:postgresql://postgres-service:5432/chargestationdb"
+    username: "adilyildiz"
+    password: "1133"
+  jpa:
+    hibernate:
+      ddlAuto: "update"
+  kafka:
+    bootstrapServers: "kafka:9092"
+  redis:
+    host: "redis-service"
+    port: "6379"
+
+
+graphql:
+  enabled: true
+  port: 8083
+  path: "/graphql"
+  schemaFile: "classpath:graphql/schema.graphqls"
+
+
+app:
+  name: chargesquare
+  replicas: 2
+  image:
+    repository: chargesquare-app
+    tag: latest
+    pullPolicy: Never
+  containerPort: 8083
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+  ports:
+    - port: 8083
+      targetPort: 8083
+
+configMapName: app-config
+kafka:
+  name: kafka
+  replicas: 1
+  image:
+    repository: confluentinc/cp-kafka
+    tag: 7.3.0
+  containerPort: 9092
+  brokerId: "1"
+  zookeeperConnect: zookeeper:2181
+  advertisedListeners: PLAINTEXT://kafka:9092
+  offsetsTopicReplicationFactor: "1"
+  service:
+    name: kafka
+    port: 9092
+    targetPort: 9092
+    clusterIP: None # En
+postgres:
+  name: postgres
+  replicas: 1
+  image:
+    repository: postgres
+    tag: 13
+  port: 5432
+  db: "chargestationdb"
+  user: "adilyildiz"
+  password: "1133"
+redis:
+  name: redis
+  replicas: 1
+  image:
+    repository: redis
+    tag: latest
+  port: 6379
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+replicaCount: 1

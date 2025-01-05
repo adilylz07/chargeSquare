@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.kafka.service.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.kafka.name }}
+spec:
+  ports:
+    - name: kafka
+      port: {{ .Values.kafka.service.port }}
+      targetPort: {{ .Values.kafka.service.targetPort }}
+  selector:
+    app: {{ .Values.kafka.name }}
+  clusterIP: {{ .Values.kafka.service.clusterIP }}

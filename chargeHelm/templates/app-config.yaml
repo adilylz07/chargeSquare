@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: {{ .Values.namespace }}
+data:
+  SPRING_DATASOURCE_URL: "{{ .Values.spring.datasource.url }}"
+  SPRING_DATASOURCE_USERNAME: "{{ .Values.spring.datasource.username }}"
+  SPRING_DATASOURCE_PASSWORD: "{{ .Values.spring.datasource.password }}"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "{{ .Values.spring.jpa.hibernate.ddlAuto }}"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "{{ .Values.spring.kafka.bootstrapServers }}"
+  SPRING_REDIS_HOST: "{{ .Values.spring.redis.host }}"
+  SPRING_REDIS_PORT: "{{ .Values.spring.redis.port }}"
+  SPRING_GRAPHQL_PATH: "{{ .Values.graphql.path }}"
+  SPRING_GRAPHQL_SCHEMA_FILE: "{{ .Values.graphql.schemaFile }}"

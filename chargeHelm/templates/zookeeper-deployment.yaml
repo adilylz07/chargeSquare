@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.zookeeper.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.zookeeper.name }}
+spec:
+  replicas: {{ .Values.zookeeper.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.zookeeper.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.zookeeper.name }}
+    spec:
+      containers:
+        - name: {{ .Values.zookeeper.name }}
+          image: "{{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.zookeeper.port }}
+          env:
+            - name: ZOOKEEPER_CLIENT_PORT
+              value: "{{ .Values.zookeeper.env.clientPort }}"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "{{ .Values.zookeeper.env.tickTime }}"
+          resources:
+            limits:
+              memory: "{{ .Values.zookeeper.resources.limits.memory }}"
+              cpu: "{{ .Values.zookeeper.resources.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.zookeeper.resources.requests.memory }}"
+              cpu: "{{ .Values.zookeeper.resources.requests.cpu }}"

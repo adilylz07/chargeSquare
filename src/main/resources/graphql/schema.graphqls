@@ -1,0 +1,21 @@
+type Query {
+    getAllStations: [ChargingStation!]!
+    getStationById(id: ID!): ChargingStation
+}
+
+type Mutation {
+    addStation(input: ChargingStationInput!): ChargingStation!
+}
+
+type ChargingStation {
+    id: ID!
+    name: String!
+    location: String!
+    capacity: Int!
+}
+
+input ChargingStationInput {
+    name: String!
+    location: String!
+    capacity: Int!
+}
