@@ -16,9 +16,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
+          distribution: 'temurin' # JDK dağıtımı (temurin önerilir)
       - name: Run Maven Linting
         run: mvn checkstyle:check
-
   test:
     runs-on: ubuntu-latest
     needs: lint
@@ -31,3 +31,4 @@ jobs:
           java-version: 17
       - name: Run Unit Tests
         run: mvn test
+
