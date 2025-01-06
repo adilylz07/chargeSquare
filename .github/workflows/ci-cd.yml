@@ -53,14 +53,21 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: 'v1.28.0' # Specify the kubectl version
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
-      - name: Deploy Application to Kubernetes
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          version: 'v1.28.0' # Specify kubectl version
+
+      - name: Configure Kubernetes Cluster
         run: |
-          kubectl config set-cluster chargesquare --server=http://localhost:8083
+          kubectl config set-cluster chargesquare --server=https://127.0.0.1:58029
           kubectl config set-context chargesquare --cluster=chargesquare
           kubectl config use-context chargesquare
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.12.0' # Specify Helm version
+
+      - name: Deploy Application to Kubernetes
+        env:
+          KUBE CONFIG: ${{ secrets.KUBECONFIG }} # Use your kubeconfig secret
+        run: |
           helm upgrade --install chargesquare ./helm/chargesquare --namespace chargesquare --create-namespace
