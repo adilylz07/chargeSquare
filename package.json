@@ -1,0 +1,30 @@
+{
+  "devDependencies": {
+    "eslint": "^9.17.0"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.17.0"
+  },
+  "name": "chargesquare",
+  "version": "1.0.0",
+  "description": "`chargeSquare` is a Spring Boot application that provides RESTful APIs for managing charging stations. This project is containerized using Docker and deployed on a Kubernetes cluster managed via Helm.",
+  "main": "eslint.config.js",
+
+  "scripts": {
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adilylz07/chargeSquare.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/adilylz07/chargeSquare/issues"
+  },
+  "homepage": "https://github.com/adilylz07/chargeSquare#readme"
+}
