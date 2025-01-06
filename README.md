@@ -8,6 +8,7 @@
 - [Building the Application](#building-the-application)
 - [Running the Application](#running-the-application)
 - [Testing the Application](#testing-the-application)
+- [CI/CD Pipelines](#cicd-pipelines)
 - [Postman Collection](#postman-collection)
 
 ## Prerequisites
@@ -101,14 +102,38 @@ Before you begin, ensure you have the following installed on your machine:
 
 2. You should receive a JSON response with the requested data.
 
+## CI/CD Pipelines
+
+The project uses GitHub Actions for Continuous Integration and Continuous Deployment (CI/CD). The pipeline includes the following stages:
+
+### Lint
+- Checks the code quality using Maven Checkstyle.
+- Ensures that the code adheres to the project's coding standards.
+- Command: `mvn checkstyle:check`.
+
+### Test
+- Runs unit tests to verify the correctness of the application.
+- Command: `mvn test`.
+
+### Build
+- Builds the project and creates a JAR file using Maven.
+- Command: `mvn clean package -DskipTests`.
+
+### Deploy
+- Deploys the application to a Kubernetes cluster using Helm.
+- Uses `kubectl` and Helm to configure and deploy the application.
+- Verifies the deployment by ensuring the pods and services are running.
+
+For more details, refer to the `.github/workflows` directory in the repository.
+
 ## Postman Collection
 
 A Postman collection is available for testing the API. Follow these steps to use it:
 
 1. Download the Postman collection file [here](https://github.com/adilylz07/chargeSquare/blob/main/chargeSquare.postman_collection.json).
 2. Open Postman and import the collection:
-    - Click on `Import` in the top-left corner.
-    - Select `File` and upload the downloaded `chargeSquare.postman_collection.json` file.
+   - Click on `Import` in the top-left corner.
+   - Select `File` and upload the downloaded `chargeSquare.postman_collection.json` file.
 3. Use the imported collection to test the available API endpoints.
 
 ## Notes
