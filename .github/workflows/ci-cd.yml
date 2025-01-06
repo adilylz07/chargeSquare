@@ -67,7 +67,5 @@ jobs:
           version: 'v3.12.0' # Specify Helm version
 
       - name: Deploy Application to Kubernetes
-        env:
-          KUBE CONFIG: ${{ secrets.KUBECONFIG }} # Use your kubeconfig secret
         run: |
           helm upgrade --install chargesquare ./helm/chargesquare --namespace chargesquare --create-namespace
