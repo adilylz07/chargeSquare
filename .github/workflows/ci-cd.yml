@@ -82,4 +82,3 @@ jobs:
         run: |
           echo "Port forwarding is a local step. Use the command below on your local machine:"
           echo "kubectl port-forward service/chargesquare 8083:8083 -n chargesquare"
-  
