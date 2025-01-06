@@ -60,5 +60,7 @@ jobs:
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
+          kubectl config set-cluster chargesquare --server=http://localhost:8083
+          kubectl config set-context chargesquare --cluster=chargesquare
+          kubectl config use-context chargesquare
           helm upgrade --install chargesquare ./helm/chargesquare --namespace chargesquare --create-namespace
-
