@@ -8,6 +8,7 @@
 - [Building the Application](#building-the-application)
 - [Running the Application](#running-the-application)
 - [Testing the Application](#testing-the-application)
+- [Postman Collection](#postman-collection)
 
 ## Prerequisites
 
@@ -100,11 +101,21 @@ Before you begin, ensure you have the following installed on your machine:
 
 2. You should receive a JSON response with the requested data.
 
-## Notes
+## Postman Collection
 
-- Ensure that Kafka and Zookeeper are running if your application depends on them.
-- Update `application.yml` or environment variables to match your deployment configuration.
-- Replace `<your-dockerhub-username>` with your actual Docker Hub username in the deployment YAML or Helm chart.
+A Postman collection for testing the APIs is available in this repository. You can import it into Postman to quickly test the available endpoints.
+
+1. Locate the Postman collection JSON file in the `postman` directory of this repository:
+    ```
+    postman/chargeSquare.postman_collection.json
+    ```
+
+2. Import the collection into Postman:
+    - Open Postman.
+    - Click on **Import**.
+    - Select the `chargeSquare.postman_collection.json` file.
+    
+3. Once imported, you can run the predefined requests to interact with the application APIs.
 
 For further questions or contributions, feel free to create an issue or submit a pull request to the repository.
 
