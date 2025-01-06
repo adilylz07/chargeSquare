@@ -1,43 +1,110 @@
-This microservice is designed to manage charging stations for electric vehicles, providing a RESTful API for creating, reading, and managing station data. It uses Spring Boot for backend development and PostgreSQL as the database.
+# chargeSquare
 
-Prerequisites
-Make sure the following tools are installed on your machine:
+`chargeSquare` is a Spring Boot application that provides RESTful APIs for managing charging stations. This project is containerized using Docker and deployed on a Kubernetes cluster managed via Helm.
 
-Java 17 or higher
-Apache Maven
-PostgreSQL
-Postman (optional, for API testing)
-Setup Instructions
-Step 1: Clone the Repository
-Clone the project to your local machine:
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Building the Application](#building-the-application)
+- [Running the Application](#running-the-application)
+- [Testing the Application](#testing-the-application)
 
-bash
-git clone <repository-url>
-cd <repository-folder>
-Step 2: Set Up PostgreSQL
-Start PostgreSQL:
-bash
-brew services start postgresql
-Open the PostgreSQL shell:
-bash
-psql -U postgres
-Create the database:
-sql
-CREATE DATABASE chargestationdb;
-Step 3: Configure the Application
-Open the src/main/resources/application.properties file and provide your PostgreSQL credentials:
+## Prerequisites
 
-properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/chargestationdb
-spring.datasource.username=postgres
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-Replace your_password with the actual password for your PostgreSQL user.
+Before you begin, ensure you have the following installed on your machine:
 
-Step 4: Build and Run the Application
-Build the project:
-bash
-mvn clean install
-Run the application:
-mvn spring-boot:run
-The service will start at http://localhost:8080.
+- JDK 17
+- Maven
+- Docker
+- Kubernetes (Minikube or any Kubernetes cluster)
+- `kubectl`
+- Helm
+- Postman (for API testing)
+
+## Installation
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/adilylz07/chargeSquare.git
+    cd chargeSquare
+    ```
+
+## Building the Application
+
+1. Use Maven to build the Spring Boot application without running the tests:
+    ```sh
+    mvn clean package -DskipTests
+    ```
+
+## Running the Application
+
+### Running Locally
+
+1. Run the application using Maven:
+    ```sh
+    mvn spring-boot:run
+    ```
+
+2. The application will start and be accessible at:
+    ```
+    http://localhost:8083/stations
+    ```
+
+### Running with Docker
+
+1. Build the Docker image:
+    ```sh
+    docker build -t chargesquare:latest .
+    ```
+
+2. Tag and push the Docker image to Docker Hub:
+    ```sh
+    docker tag chargesquare:latest <your-dockerhub-username>/chargesquare:latest
+    docker push <your-dockerhub-username>/chargesquare:latest
+    ```
+
+### Deploying on Kubernetes using Helm
+
+1. Package the Helm chart (if needed):
+    ```sh
+    helm package ./chargeHelm
+    ```
+
+2. Deploy or upgrade the application using Helm:
+    ```sh
+    helm upgrade chargesquare ./chargeHelm --namespace chargesquare
+    ```
+
+3. Verify the deployment:
+    ```sh
+    kubectl get pods -n chargesquare
+    kubectl get svc -n chargesquare
+    ```
+
+4. Forward the service port for local access:
+    ```sh
+    kubectl port-forward service/chargesquare 8083:8083 -n chargesquare
+    ```
+
+5. Access the API locally:
+    ```
+    http://localhost:8083/stations
+    ```
+
+## Testing the Application
+
+1. Use Postman or `curl` to test the REST API. For example:
+    ```sh
+    curl -X GET http://localhost:8083/stations
+    ```
+
+2. You should receive a JSON response with the requested data.
+
+## Notes
+
+- Ensure that Kafka and Zookeeper are running if your application depends on them.
+- Update `application.yml` or environment variables to match your deployment configuration.
+- Replace `<your-dockerhub-username>` with your actual Docker Hub username in the deployment YAML or Helm chart.
+
+For further questions or contributions, feel free to create an issue or submit a pull request to the repository.
+
