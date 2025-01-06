@@ -29,6 +29,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
+          distribution: 'adopt' # Specify the Java distribution (e.g., adopt, zulu)
       - name: Run Unit Tests
         run: mvn test
 
