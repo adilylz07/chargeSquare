@@ -7,6 +7,30 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+      - name: Run Maven Linting
+        run: mvn checkstyle:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+      - name: Run Unit Tests
+        run: mvn test
+
   build:
     runs-on: ubuntu-latest
     needs:
@@ -21,17 +45,34 @@ jobs:
           java-version: 17
       - name: Build JAR
         run: mvn clean package -DskipTests
-  lint:
+
+  docker:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Build Docker Image
+        run: docker build -t chargesquare:latest .
+      - name: Tag and Push Docker Image
+        run: |
+          docker tag chargesquare:latest ${{ secrets.DOCKER_USERNAME }}/chargesquare:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/chargesquare:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
         with:
-          java-version: 17
-          distribution: 'temurin' # JDK dağıtımı (temurin önerilir)
-      - name: Run Maven Linting
-        run: mvn checkstyle:check
-
-
+          version: 'v1.28.0'
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+      - name: Deploy to Kubernetes
+        run: |
+          helm upgrade --install chargesquare ./chargeHelm --namespace chargesquare
