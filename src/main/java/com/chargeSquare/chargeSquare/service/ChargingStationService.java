@@ -20,7 +20,6 @@ public class ChargingStationService {
         this.repository = repository;
     }
     @Transactional
-    @CacheEvict(value = "stations", allEntries = true)
     public void deleteAllStations() {
         repository.deleteAll();  // Veritabanındaki tüm istasyonları siler
     }
@@ -36,7 +35,7 @@ public class ChargingStationService {
     }
 
     // Yeni bir istasyon ekleme metodu
-    @CacheEvict(value = "stations", allEntries = true) // "stations" önbelleğini temizler
+    @Cacheable(value = "station", key = "#id")
     public ChargingStation addStation(ChargingStation station) {
         return repository.save(station); // Veritabanına kaydeder
     }

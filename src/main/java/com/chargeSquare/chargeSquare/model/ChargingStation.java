@@ -21,7 +21,7 @@ public class ChargingStation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long id;  // ID alanı, JSON'dan gelen ID'ye karşılık gelir.
+    private Long id;
 
     private String name;
     private String location;
@@ -37,7 +37,6 @@ public class ChargingStation implements Serializable {
     public ChargingStation() {
     }
 
-    // Getter ve Setter'lar
     public Long getId() {
         return id;
     }
@@ -70,7 +69,6 @@ public class ChargingStation implements Serializable {
         this.capacity = capacity;
     }
 
-    // toString metodu (Opsiyonel, loglama veya debugging için)
     @Override
     public String toString() {
         return "ChargingStation{" +

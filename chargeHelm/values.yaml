@@ -7,7 +7,7 @@ zookeeper:
   image:
     repository: confluentinc/cp-zookeeper
     tag: 7.3.0
-  port: 2181 # Move this here
+  port: 2181
   env:
     clientPort: "2181"
     tickTime: "2000"

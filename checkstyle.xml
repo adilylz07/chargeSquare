@@ -4,6 +4,5 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 <module name="Checker">
     <module name="TreeWalker">
-        <!-- TrailingWhitespace kaldırıldı -->
     </module>
 </module>

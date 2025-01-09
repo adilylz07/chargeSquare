@@ -8,9 +8,8 @@ public class Location {
     private String addressLine1;
 
     @JsonProperty("Title")
-    private String title;  // Title alanını burada tanımlıyoruz.
+    private String title;
 
-    // Getter ve Setter metodları
 
     public String getAddressLine1() {
         return addressLine1;
