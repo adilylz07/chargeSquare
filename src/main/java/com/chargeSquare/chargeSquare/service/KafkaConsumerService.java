@@ -20,21 +20,17 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "charging-stations-topic", groupId = "charging-stations-group")
     public void consumeMessage(String message) {
         try {
-            // Mesajı JSON'dan ChargingStationDTO'ya dönüştür
             ChargingStationDTO stationDTO = new ObjectMapper().readValue(message, ChargingStationDTO.class);
 
-            // ChargingStation nesnesine dönüşüm yap
             ChargingStation station = new ChargingStation();
 
-            // Eşlemeleri burada yapıyoruz
-             // ID
+
             station.setId(stationDTO.getId());
-            station.setName(stationDTO.getLocation().getTitle());  // Title => name
-            station.setLocation(stationDTO.getLocation().getAddressLine1());  // AddressLine1 => location
-            station.setCapacity(stationDTO.getCapacity());  // NumberOfPoints => capacity
+            station.setName(stationDTO.getLocation().getTitle());
+            station.setLocation(stationDTO.getLocation().getAddressLine1());
+            station.setCapacity(stationDTO.getCapacity());
             System.out.println(station.toString());
-            // ChargingStation nesnesini veritabanına kaydet
-            repository.save(station);  // ChargingStation nesnesini kaydet
+            repository.save(station);
         } catch (JsonProcessingException e) {
             System.out.println("Error processing message: " + message);
             e.printStackTrace();

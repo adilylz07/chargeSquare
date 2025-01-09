@@ -17,12 +17,9 @@ public class KafkaProducerService {
 
     public void sendMessage(String topic, ChargingStationDTO station) {
         try {
-            // Jackson ObjectMapper kullanarak nesneyi JSON string'ine dönüştür
             String message = new ObjectMapper().writeValueAsString(station);
-            System.out.println("Sending message: " + message); // Mesajı kontrol etmek için logla
-            kafkaTemplate.send(topic, message);  // JSON mesajını Kafka'ya gönder
+            kafkaTemplate.send(topic, message);
         } catch (JsonProcessingException e) {
-            // Hata durumunda loglama yap
             System.err.println("Error processing JSON: " + e.getMessage());
             e.printStackTrace();
         }
